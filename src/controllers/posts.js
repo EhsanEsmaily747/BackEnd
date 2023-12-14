@@ -7,7 +7,7 @@ import path from "path";
 export const getAll = catchAsync(async (req, res) => {
   let filter = {}
   let sorts = {}
-  console.log(req.query);
+  // console.log(req.query);
   if (req.query) {
     if (req.query.id) filter._id = req.query.id
     if (req.query.category) filter.category = req.query.category
@@ -19,16 +19,25 @@ export const getAll = catchAsync(async (req, res) => {
       filter.$or = [{ title: regex }];
     }
   }
-  let posts = await Post
-    .find(filter)
-    .sort(sorts)
-    .limit(10)
-    .populate("category")
-    .populate("author")
-    .exec();
+  if (req.query){
+    
+    let posts = await Post
+      .find(filter)
+      .sort(sorts)
+      .limit(10)
+      .populate("category")
+      .populate("author")
+      .exec();
+  
+    // console.log(posts);
+    res.status(200).json({ message: "", posts: posts });
+  }else{
+    let posts = await Post.find()
 
-  // console.log(posts);
-  res.status(200).json({ message: "", posts: posts });
+    res.status('200').json({message:'',posts:posts.length})
+  }
+
+
 });
 
 
