@@ -1,6 +1,6 @@
 import Category from "../models/category.js";
 import { catchAsync } from "../middlewares.js";
-
+import Post from "../models/post.js"
 
 
 
@@ -50,6 +50,16 @@ export const deleteCategory = catchAsync(async (req, res) => {
     return res.status(500).json({ message: "Category doesn't exist" })
   }
   existCategory.deleteOne();
+
+  const filter={category:id}
+
+  const posts = await Post.find(filter)
+
+  for (let index = 0; index < posts.length; index++) {
+    posts[index].category='65576fedfbdf37c88b835229'
+    posts[index].save()  
+  }
+
   return res.status(200).json({ message: "Category Deleted ", category: existCategory })
 
 });
