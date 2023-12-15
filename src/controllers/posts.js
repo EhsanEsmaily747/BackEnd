@@ -1,8 +1,6 @@
 import Post from "../models/post.js";
 import { catchAsync } from "../middlewares.js";
-import User from "../models/user.js";
-// import Category from "../models/category.js";
-import path from "path";
+
 
 export const getAll = catchAsync(async (req, res) => {
   let filter = {}
@@ -18,9 +16,6 @@ export const getAll = catchAsync(async (req, res) => {
       let regex = new RegExp(req.query.searchTerm, "i");
       filter.$or = [{ title: regex }];
     }
-  }
-  if (req.query){
-    
     let posts = await Post
       .find(filter)
       .sort(sorts)
